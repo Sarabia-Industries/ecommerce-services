@@ -17,6 +17,29 @@ services:
             - PORT=3000
             - NATS_SERVERS=nats://nats-server:4222
 
+    auth-ms:
+        # depends_on:
+        #     - mongo-db
+        build: ./auth-ms
+        volumes:
+            - ./auth-ms/src:/usr/src/app/src
+        command: yarn start:dev
+        environment:
+            - PORT=3004
+            - NATS_SERVERS=nats://nats-server:4222
+            - DATABASE_URL=mongodb+srv://root:lmB8qfZymlPXlxVN@cluster0.33www2j.mongodb.net/auth?retryWrites=true&w=majority&appName=Cluster0
+            - JWT_SECRET=${JWT_SECRET}
+    # mongo-db:
+    #     image: mongo:latest
+    #     restart: always
+    #     volumes:
+    #         - ./auth-ms/mongodb-data:/data/db
+    #     ports:
+    #         - 27017:27017
+    #     environment:
+    #         - MONGO_INITDB_ROOT_USERNAME=root
+    #         - MONGO_INITDB_ROOT_PASSWORD=123456
+
     products-ms:
         build: ./products-ms
         volumes:
